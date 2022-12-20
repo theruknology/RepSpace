@@ -40,6 +40,10 @@ const Pomodoro = (props) => {
   //   // setTimerRunning(false);
   // };
 
+  const closeHandler = () => {
+    props.onClose();
+  }
+
   return (
     <div
       className={
@@ -47,22 +51,21 @@ const Pomodoro = (props) => {
         ` bg-gray-300 h-fit flex flex-col gap-2 rounded-xl p-4 cursor-pointer`
       }
     >
-      <h3 className="font-semibold text-gray-700">Pomodoro Timer</h3>
+      <div className="font-semibold text-gray-700 flex justify-between">
+        <h3>Pomodoro Timer</h3>
+        <button onClick={closeHandler}>✖</button>
+      </div>
       <p className="font-extrabold text-5xl text-gray-700">
         {minutes < 10 ? "0" + minutes : minutes}:
         {seconds < 10 ? "0" + seconds : seconds}
       </p>
       <div className="flex gap-2 w-fit ml-auto">
         {!timerRunning && (
-          <button
-            className="w-fit ml-auto bg-gray-700 text-gray-100 py-2 px-4 rounded-lg hover:bg-gray-900 focus:ring-4 focus:ring-gray-400 focus:outline-none"
-          >
+          <button className="w-fit ml-auto bg-gray-700 text-gray-100 py-2 px-4 rounded-lg hover:bg-gray-900 focus:ring-4 focus:ring-gray-400 focus:outline-none">
             Start
           </button>
         )}
-        <button
-          className="w-fit ml-auto bg-gray-700 text-gray-100 py-2 px-4 rounded-lg hover:bg-gray-900 focus:ring-4 focus:ring-gray-400 focus:outline-none"
-        >
+        <button className="w-fit ml-auto bg-gray-700 text-gray-100 py-2 px-4 rounded-lg hover:bg-gray-900 focus:ring-4 focus:ring-gray-400 focus:outline-none">
           Reset
         </button>
       </div>

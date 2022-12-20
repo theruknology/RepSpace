@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 
-const CardContext = () => {
-  const [cycleStart, setCycleStart] = useState(null);
-  const [allCards, setAllCards] = useState([]);
+const CardContext = React.createContext({
+  allCards: [],
+  cycleStart: "",
+  todaysBoxes: [],
+  addCard: (title, box = "box1") => {},
+  deleteCard: (id) => {},
+  changeBoxOfCard: (id, box) => {},
+});
 
-  const todaysBoxes = (cycleStart) => {
+export const CardContextProvider = (props) => {
+  // Store date in STRING Type
+  const [cycleStart, setCycleStart] = useState("");
+  const [allCards, setAllCards] = useState([]);
+  const [todaysBoxes, setTodaysBoxes] = useState([]);
+
+  // input date in STRING Type
+  const todaysBoxesCalc = (cycleStart) => {
     const today = new Date(Date.now());
     const absToday = new Date(
-      `${today.getFullYear}-${today.getMonth + 1}-${today.getDate} `
+      `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
     );
     const todaysBoxesArray = ["box1"];
     let cycleStartDate = new Date(cycleStart);
@@ -35,11 +47,59 @@ const CardContext = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("CYCLE_START") !== undefined) {
-      setCycleStart(localStorage.getItem("CYCLE_START"));
+    if (localStorage.getItem("CYCLE_START") !== null) {
+      const storedDate = localStorage.getItem("CYCLE_START");
+      setCycleStart(storedDate);
+      const boxer = todaysBoxesCalc(storedDate);
+      setTodaysBoxes(boxer);
     } else {
+      const today = new Date(Date.now());
+      const todayString = `${today.getFullYear()}-${
+        today.getMonth() + 1
+      }-${today.getDate()}`;
+      localStorage.setItem("CYCLE_START", todayString);
+      setCycleStart(todayString);
+      const boxer = todaysBoxesCalc(todayString);
+      setTodaysBoxes(boxer);
     }
   }, []);
 
-  return;
+  const addCard = (title, box = "box1") => {
+    setAllCards((prev) => {
+      return [
+        ...prev,
+        { id: Math.random().toString(), title: title, box: box },
+      ];
+    });
+  };
+
+  const deleteCard = (id) => {
+    setAllCards((prev) => {
+      return prev.filter((itm) => itm.id !== id);
+    });
+  };
+
+  const changeBoxOfCard = (id, box) => {
+    const newContainer = [...allCards];
+    const item = newContainer.find(itm => itm.id === id);
+    item.box = box;
+    setAllCards(newContainer);
+  };
+
+  return (
+    <CardContext.Provider
+      value={{
+        allCards: allCards,
+        cycleStart: cycleStart,
+        todaysBoxes: todaysBoxes,
+        addCard: addCard,
+        deleteCard: deleteCard,
+        changeBoxOfCard: changeBoxOfCard,
+      }}
+    >
+      {props.children}
+    </CardContext.Provider>
+  );
 };
+
+export default CardContext;
