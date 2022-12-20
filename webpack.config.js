@@ -15,7 +15,7 @@ module.exports = {
       directory: path.join(__dirname, "public"),
     },
     open: true,
-    hot: true,
+    hot: false,
     liveReload: true,
   },
   resolve: {
