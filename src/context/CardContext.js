@@ -62,7 +62,19 @@ export const CardContextProvider = (props) => {
       const boxer = todaysBoxesCalc(todayString);
       setTodaysBoxes(boxer);
     }
+
+    if (localStorage.getItem("ALL_CARDS") !== null) {
+      const storageObject = JSON.parse(localStorage.getItem("ALL_CARDS"));
+      setAllCards(storageObject.cards);
+    }
   }, []);
+
+  useEffect(() => {
+    const storageObject = {
+      cards: [...allCards],
+    };
+    localStorage.setItem("ALL_CARDS", JSON.stringify(storageObject));
+  }, [allCards]);
 
   const addCard = (title, box = "box1") => {
     setAllCards((prev) => {
@@ -81,7 +93,7 @@ export const CardContextProvider = (props) => {
 
   const changeBoxOfCard = (id, box) => {
     const newContainer = [...allCards];
-    const item = newContainer.find(itm => itm.id === id);
+    const item = newContainer.find((itm) => itm.id === id);
     item.box = box;
     setAllCards(newContainer);
   };
