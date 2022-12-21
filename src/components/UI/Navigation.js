@@ -11,7 +11,7 @@ const Navigation = (props) => {
         className="font-semibold text-sm text-gray-500"
         onClick={viewChange}
       >
-        {props.Parent}
+        {"<"} {props.Parent}
       </button>
       <p className="text-sm text-gray-500">/ {props.Child}</p>
     </div>

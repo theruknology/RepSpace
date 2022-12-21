@@ -21,6 +21,9 @@ export const CardContextProvider = (props) => {
     const absToday = new Date(
       `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
     );
+
+    // *IMPORTANT ->
+    // REMOVE box2 before Deploying
     const todaysBoxesArray = ["box1"];
     let cycleStartDate = new Date(cycleStart);
     const diffDays = Math.ceil(
@@ -74,6 +77,7 @@ export const CardContextProvider = (props) => {
       cards: [...allCards],
     };
     localStorage.setItem("ALL_CARDS", JSON.stringify(storageObject));
+    console.log('local storage updated');
   }, [allCards]);
 
   const addCard = (title, box = "box1") => {
@@ -98,6 +102,20 @@ export const CardContextProvider = (props) => {
     setAllCards(newContainer);
   };
 
+  const promoteCard = (id, box) => {
+    if (box !== "box5") {
+      const promotedCard = "box" + (+box.charAt(box.length - 1) + 1);
+      changeBoxOfCard(id, promotedCard);
+    }
+  };
+
+  const demoteCard = (id, box) => {
+    if (box !== "box1") {
+      const demotedCard = "box" + (+box.charAt(box.length - 1) - 1);
+      changeBoxOfCard(id, demotedCard);
+    }
+  };
+
   return (
     <CardContext.Provider
       value={{
@@ -107,6 +125,8 @@ export const CardContextProvider = (props) => {
         addCard: addCard,
         deleteCard: deleteCard,
         changeBoxOfCard: changeBoxOfCard,
+        promoteCard: promoteCard,
+        demoteCard: demoteCard,
       }}
     >
       {props.children}

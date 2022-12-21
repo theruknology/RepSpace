@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import AllBoxes from "./components/AllBoxes/AllBoxes";
+import Course from "./components/CardCourse/Course";
 import NewTopic from "./components/NewTopic/NewTopic";
 import Pomodoro from "./components/Pomodoro/Pomodoro";
 import Dashboard from "./components/TodaysView/Dashboard";
@@ -6,11 +8,16 @@ import Navigation from "./components/UI/Navigation";
 import "./index.css";
 
 export default function App() {
-  const [view, setView] = useState("New Topic");
+  const [view, setView] = useState("Dashboard");
   const [showPom, setShowPom] = useState(true);
+  const [currentCourse, setCurrentCourse] = useState("box1");
 
   const changeViewHandler = (view) => {
     setView(view);
+  };
+
+  const changeBoxHandler = (box) => {
+    setCurrentCourse(box);
   };
 
   document.title = "RepSpace - " + view;
@@ -18,7 +25,7 @@ export default function App() {
   return (
     <div
       id="container"
-      className="w-[400px] h-[100vh] mx-auto bg-slate-100 p-4 flex flex-col gap-4"
+      className="w-[100vw] h-[100vh] mx-auto bg-slate-100 p-4 flex flex-col gap-4"
     >
       {/* Window Container to duplicate routing process */}
       <div
@@ -32,8 +39,15 @@ export default function App() {
             onChangeView={changeViewHandler}
           />
         )}
-        {view === "Dashboard" && <Dashboard onChangeView={changeViewHandler} />}
-        {view === "New Topic" && <NewTopic onChangeView={changeViewHandler}/>}
+        {view === "Dashboard" && (
+          <Dashboard
+            onChangeView={changeViewHandler}
+            onSetBox={changeBoxHandler}
+          />
+        )}
+        {view === "New Topic" && <NewTopic onChangeView={changeViewHandler} />}
+        {view === "Course Session" && <Course box={currentCourse} />}
+        {view === "All Boxes" && <AllBoxes />}
       </div>
       {showPom && (
         <Pomodoro

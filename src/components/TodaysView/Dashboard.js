@@ -8,9 +8,15 @@ const Dashboard = (props) => {
   const allBoxesHandler = () => {
     props.onChangeView("All Boxes");
   };
+  const changeBoxHandler = (box) => {
+    props.onSetBox(box);
+  };
+  const onChangeWindow = (view) => {
+    props.onChangeView(view);
+  };
   return (
     <>
-      <TodayView />
+      <TodayView onChangeView={onChangeWindow} onSetBox={changeBoxHandler} />
       <div className="flex gap-2 text-white mt-auto ml-auto">
         <button
           onClick={addTitleHandler}
