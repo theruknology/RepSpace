@@ -9,7 +9,7 @@ import "./index.css";
 
 export default function App() {
   const [view, setView] = useState("Dashboard");
-  const [showPom, setShowPom] = useState(true);
+  const [showPom, setShowPom] = useState(false);
   const [currentCourse, setCurrentCourse] = useState("box1");
 
   const changeViewHandler = (view) => {
@@ -25,7 +25,7 @@ export default function App() {
   return (
     <div
       id="container"
-      className="w-[100vw] h-[100vh] mx-auto bg-slate-100 p-4 flex flex-col gap-4"
+      className="w-[100vw] h-[100vh] max-sm:h-[90vh] mx-auto bg-slate-100 p-4 flex flex-col gap-4"
     >
       {/* Window Container to duplicate routing process */}
       <div
